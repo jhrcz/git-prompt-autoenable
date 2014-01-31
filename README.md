@@ -1,5 +1,6 @@
+# git-prompt with include/exclude wrapper
 
-# info
+## info
 
 by default these env variables are set to enable useful git-prompt features (configurable in git-prompt.conf)
 
@@ -34,15 +35,15 @@ real example (with htdocs dir undefined, jizdy in includes and pics subdir in ex
 
 when there is no specific include list, git-prompt is enabled by default.
 
-# midnight commander compatibility
+## midnight commander compatibility
 
 for working in MC subshell there is special `declare` for `_git_ps1`
 
-# git-prompt doc
+## git-prompt doc
 
 https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
 
-# update notes
+## update notes
 
 package contains git-prompt.sh from recent git package.
 
