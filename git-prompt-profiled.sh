@@ -1,32 +1,48 @@
 #!/bin/bash
 
-case $USER in
-	"etndevel")
+go ()
+{
+	script="$( ls /usr/share/doc/git-*/contrib/completion/git-completion.bash 2>/dev/null | head -n 1 )"
+	if [ -n "$script" ]
+	then
+		source $script
+	else
+		#source /usr/share/git-core/contrib/completion/git-prompt.sh
+		source $BINDIR/git-prompt.sh
+	fi
 
+	declare -fx __git_ps1
+	declare -fx __gitdir
 
-		script="$( ls /usr/share/doc/git-*/contrib/completion/git-completion.bash 2>/dev/null | head -n 1 )"
-		if [ -n "$script" ]
-		then
-			source $script
-		else
-			#source /usr/share/git-core/contrib/completion/git-prompt.sh
-			source /usr/local/bin/git-prompt.sh
-		fi
+	# PS1 setting without wrapper
+	#PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+	PS1='[\u@\h \W$($BINDIR/git-prompt-cond.sh " (%s)")]\$ '
+	export PS1
 
-		declare -fx __git_ps1
-		export GIT_PS1_SHOWDIRTYSTATE=1
-		export GIT_PS1_SHOWSTASHSTATE=1
-		export GIT_PS1_SHOWUNTRACKEDFILES=1
-		export GIT_PS1_SHOWCOLORHINTS=1
-
-		PROMPT_COMMAND='__git_ps1 "\u@\h:\w" "\\\$ "'
+	if [ "$USE_PROMPT" = "YES" ]
+	then
+		PROMPT_COMMAND="$BINDIR"'/git-prompt-cond.sh "\u@\h:\w" "\\\$ "'
 		export PROMPT_COMMAND
+	fi
+}
 
-		PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
-		export PS1
+# sane defaults
+USERS=(gituser)
+USE_PROMPT=NO
+BINDIR=/usr/bin
 
-		;;
-	*)
-		;;
-esac
+# source configuration
+for cfgfile in /etc/git-prompt.conf ~/.git-prompt.conf git-prompt.conf
+do
+	[ -f "$cfgfile" ] && source "$cfgfile"
+done
+
+# enable git-prompt only for configured users
+for user in ${USERS[@]}
+do
+	if [ "$user" = "$USER" ]
+	then
+		go
+	fi
+done
 
