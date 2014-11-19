@@ -47,8 +47,8 @@ rm -rf $RPM_BUILD_ROOT
 %doc dot.git-prompt-dirs.list
 %doc dot.git-prompt-dirs-excludes.list
 
-%config(noreplace) %attr(640,root,root) /etc/profile.d/git-prompt*
-%config(noreplace) %attr(640,root,root) /etc/git-prompt.conf
+%config(noreplace) %attr(644,root,root) /etc/profile.d/git-prompt*
+%config(noreplace) %attr(644,root,root) /etc/git-prompt.conf
 /usr/bin/git-prompt*.sh
 
 
