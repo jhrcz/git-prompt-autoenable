@@ -3,6 +3,16 @@
 go ()
 {
 	script="$( ls /usr/share/doc/git-*/contrib/completion/git-completion.bash 2>/dev/null | head -n 1 )"
+	if [ -z "$script" ]
+	then
+		script="$( ls /usr/share/doc/git-*/contrib/completion/git-completion.bash 2>/dev/null | head -n 1 )"
+	fi
+	if grep -q __git_ps1 $script
+	then
+		:
+	else
+		script=""
+	fi
 	if [ -n "$script" ]
 	then
 		source $script
